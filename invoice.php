@@ -246,13 +246,13 @@ foreach($result as $row){
                     });
                 })();
             
-            // $('.qr-code').each(function() {
-            //     var qr = new QRious({
-            //         element: this,
-            //         size: 150,
-            //         value: '<?php echo $get_tracking_url; ?>'
-            //     });
-            // });
+            $('.qr-code').each(function() {
+                 var qr = new QRious({
+                    element: this,
+                 size: 150,
+                     value: '<?php echo $get_tracking_url; ?>'
+                 });
+             });
         } );
             
             
