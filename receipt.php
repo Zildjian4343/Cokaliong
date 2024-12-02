@@ -21,11 +21,11 @@ function getLaundryReceipt(){
     foreach($result as $row){
         ?>
         <tr class="font-monospace">
-                    <td class="font-monospace text-start mt-0 mb-0" style="font-size: 10px;"><?= $row['name']?></td>
-                    <th class="font-monospace text-center mt-0 mb-0" style="font-size: 10px;"><?= $row['kilo'].' '.$row['unit']?></th>
-                    <th class="font-monospace text-center mt-0 mb-0" style="font-size: 10px;">₱<?= number_format($row['price'], 2)?></th>
-                    <td class="font-monospace text-end mt-0 mb-0" style="font-size: 10px;">₱<?= number_format($row['price'] * $row['kilo'], 2)?></td>
-                </tr>
+            <td class="font-monospace text-start mt-0 mb-0" style="font-size: 12px;"><?= $row['name']?></td>
+            <th class="font-monospace text-center mt-0 mb-0" style="font-size: 12px;"><?= $row['kilo'].' '.$row['unit']?></th>
+            <th class="font-monospace text-center mt-0 mb-0" style="font-size: 12px;">₱<?= number_format($row['price'], 2)?></th>
+            <td class="font-monospace text-end mt-0 mb-0" style="font-size: 12px;">₱<?= number_format($row['price'] * $row['kilo'], 2)?></td>
+        </tr>
         <?php
     }
 }
@@ -44,10 +44,10 @@ function getItemsReceipt(){
     foreach($result as $row){
         ?>
         <tr class="font-monospace">
-                    <td class="font-monospace text-start mt-0 mb-0" style="font-size: 10px;"><?= $row['name']?></td>
-                    <th class="font-monospace text-center mt-0 mb-0" style="font-size: 10px;"><?= $row['unit']?></th>
-                    <td class="font-monospace text-end mt-0 mb-0" style="font-size: 10px;"><?= $row['qty']?></td>
-                </tr>
+            <td class="font-monospace text-start mt-0 mb-0" style="font-size: 12px;"><?= $row['name']?></td>
+            <th class="font-monospace text-center mt-0 mb-0" style="font-size: 12px;"><?= $row['unit']?></th>
+            <td class="font-monospace text-end mt-0 mb-0" style="font-size: 12px;"><?= $row['qty']?></td>
+        </tr>
         <?php
     }
 }
@@ -71,224 +71,157 @@ foreach($result as $row){
     $customer = $row['fullname'];
     $amount = $row['amount'];
 }
-
-
 ?>
 <!DOCTYPE html>
-<html data-bs-theme="light" lang="en">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Express Laundry Pala-o || Management System </title>
-    <link rel="shortcut icon" href="assets/img/washing-clothes.gif" type="image/gif">
-    <meta name="description" content="Express Laundry Pala-o || Management System ">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/bs-theme-overrides.css">
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="assets/css/Pricing-Centered-badges.css">
     <script src="assets/js/qrious.min.js"></script>
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            background-color: #f5f5f5;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .card-header {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .font-monospace {
+            font-family: 'Courier New', monospace;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .receipt-footer {
+            text-align: right;
+            font-size: 14px;
+        }
+
+        .qr-code {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .table-bordered th {
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 
-<body class="mx-5" onload="<?php if (!isset($_GET['type'])){echo 'printPageAndRedirect()';}?>">
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="font-monospace text-center" style="color: var(--bs-gray-900);font-size: 13px;">
-                    <img src="assets/img/washing-clothes.gif" width="40">&nbsp;Express laundy Pala-o<br>
-                    <span style="font-weight: normal !important;">Quezon Street Palao, Iligan City.</span><br>
-                    <span style="font-weight: normal !important;">Phone (+63) 967 995 7810</span><br>
-                    <span style="font-weight: normal !important;">Date: <?php echo date('Y-m-d')?></span><br>
-                    <canvas class="mt-1 mb-2 text-center" id="qr-code"></canvas>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr></tr>
-                <tr></tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive">
-        <table class="table table-borderless">
-            <thead>
-                <tr>
-                    <th class="font-monospace text-center" style="font-size: 15px;">Laundry Receipt</th>
-                </tr>
-            </thead>
-            <tbody class="font-monospace">
-                <tr class="font-monospace"></tr>
-                <tr class="font-monospace"></tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive font-monospace">
-        <table class="table table-borderless">
-            <thead class="font-monospace">
-                <tr class="font-monospace">
-                    <th class="font-monospace" style="font-size: 15px;"><span style="font-weight: normal !important;">CUSTOMER: <strong><?php echo $customer; ?></strong></span></th>
-                    <th class="font-monospace text-end" style="font-size: 15px;"></th>
-                    <th class="font-monospace text-end" style="font-size: 15px;"></th>
-                    <th class="font-monospace text-end" style="font-size: 15px;">INVOICE #<?php echo $_GET['id'] ?></th>
-                </tr>
-            </thead>
-            <tbody class="font-monospace">
-                
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive font-monospace">
-        <table class="table table-borderless">
-            <thead class="font-monospace">
-                <tr class="font-monospace">
-                    <th class="font-monospace text-center" style="font-size: 15px;"><span style="font-weight: normal !important;">LAUNDRY</span></th>
-                </tr>
-            </thead>
-            <tbody class="font-monospace">
-                
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive font-monospace">
-        <table class="table table-borderless">
-            <thead class="font-monospace">
-                <tr class="font-monospace">
-                    <th class="font-monospace text-start" style="font-size: 12px;"><span><strong>LAUNDRY</strong></span></th>
-                    <th class="font-monospace text-center" style="font-size: 12px;"><span><strong></strong></span></th>
-                    <th class="font-monospace text-center" style="font-size: 12px;"><span><strong>PRICE</strong></span></th>
-                    <th class="font-monospace text-end" style="font-size: 12px;"><span><strong>TOTAL</strong></span></th>
-                </tr>
-            </thead>
-            <tbody class="font-monospace">
-                <?php getLaundryReceipt()?>
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive font-monospace">
-        <table class="table table-borderless">
-            <thead class="font-monospace">
-                <tr class="font-monospace">
-                    <th class="font-monospace text-center" style="font-size: 15px;"><span style="font-weight: normal !important;">ITEMS</span></th>
-                </tr>
-            </thead>
-            <tbody class="font-monospace">
-               
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive font-monospace">
-        <table class="table table-borderless">
-            <thead class="font-monospace">
-                <tr class="font-monospace">
-                    <th class="font-monospace text-start" style="font-size: 12px;"><span><strong>ITEM</strong></span></th>
-                    <th class="font-monospace text-center" style="font-size: 12px;"><span><strong>UNIT</strong></span></th>
-                    <th class="font-monospace text-end" style="font-size: 12px;"><span><strong>QTY</strong></span></th>
-                </tr>
-            </thead>
-            <tbody class="font-monospace">
-                <?php getItemsReceipt() ?>
-            </tbody>
-        </table>
-    </div>
-    <div class="table-responsive">
-        <table class="table">
-            <thead class="font-monospace">
-                <tr class="font-monospace">
-                    <th class="font-monospace text-end"><strong>TOTAL</strong>&nbsp;<strong>₱<?php echo number_format($total, 2); ?></strong></th>
-                </tr>
-                <tr class="font-monospace">
-                    <th class="font-monospace text-end"><strong>AMOUNT</strong>&nbsp;<strong>₱<?php echo number_format($amount, 2); ?></strong></th>
-                </tr>
-                <tr class="font-monospace">
-                    <th class="font-monospace text-end"><strong>CHANGES</strong>&nbsp;<strong>₱<?php echo number_format($amount - $total, 2); ?></strong></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr></tr>
-            </tbody>
-        </table>
-        <table class="table table-borderless">
-                <thead class="font-monospace">
-                    <tr class="font-monospace">
-                        <th class="font-monospace text-center"><strong class="text-danger">**** PLEASE BRING THE Receipt TO CLAIM YOUR LAUNDRY ****</strong></th>
+<body onload="window.print()">
+    <div class="card">
+        <div class="card-header">
+            <h4><img src="assets/img/washing-clothes.gif" width="40">&nbsp;Express Laundry Pala-o</h4>
+            <p>Quezon Street Palao, Iligan City</p>
+            <p>Phone (+63) 967 995 7810</p>
+            <p>Date: <?php echo date('Y-m-d')?></p>
+            <canvas id="qr-code"></canvas>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th colspan="4" style="text-align: center; font-size: 15px;">Laundry Receipt</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr></tr>
+                    <tr>
+                        <td class="font-monospace"><strong>CUSTOMER:</strong> <?= $customer ?></td>
+                        <td class="font-monospace"></td>
+                        <td class="font-monospace text-end"><strong>INVOICE #</strong> <?= $id ?></td>
+                        <td class="font-monospace text-end"></td>
+                    </tr>
                 </tbody>
             </table>
-        </div>
-    <!-- BASKET QRCODE -->
-    
-    <div class="table-responsive mt-5">
-        <table class="table">
-            <thead>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="font-monospace text-start"><strong>LAUNDRY</strong></th>
+                        <th class="font-monospace text-center"><strong>QUANTITY</strong></th>
+                        <th class="font-monospace text-center"><strong>PRICE</strong></th>
+                        <th class="font-monospace text-end"><strong>TOTAL</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php getLaundryReceipt(); ?>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="font-monospace text-start"><strong>ITEM</strong></th>
+                        <th class="font-monospace text-center"><strong>UNIT</strong></th>
+                        <th class="font-monospace text-end"><strong>QTY</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php getItemsReceipt(); ?>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered">
                 <tr>
-                    <th class="font-monospace text-center" style="color: var(--bs-gray-900);font-size: 13px;">
-                        <img src="assets/img/washing-clothes.gif" width="40">&nbsp;Laundry Management System<br>
-                        <span style="font-weight: normal !important;">Street Unknown, Pagadian City</span><br>
-                        <span style="font-weight: normal !important;">Phone (+63) 000-000-000</span><br>
-                        <span style="font-weight: normal !important;">Date: <?php echo date('Y-m-d')?></span><br>
-                        <canvas class="mt-1 mb-2 text-center w-100" id="qr-code-basket"></canvas>
-                        <h1 class="display-1">BASKET QRCODE</h1>
-                    </th>
+                    <td class="font-monospace text-end"><strong>TOTAL: </strong>₱<?php echo number_format($total, 2); ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr></tr>
-                <tr></tr>
-            </tbody>
-        </table>
+                <tr>
+                    <td class="font-monospace text-end"><strong>AMOUNT PAID: </strong>₱<?php echo number_format($amount, 2); ?></td>
+                </tr>
+                <tr>
+                    <td class="font-monospace text-end"><strong>CHANGE: </strong>₱<?php echo number_format($amount - $total, 2); ?></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="receipt-footer">
+            <strong>THANK YOU FOR CHOOSING US!</strong>
+            <p>For inquiries, please visit or call us at the number above.</p>
+            <p><strong>Track your order: <a href="<?= $get_tracking_url ?>">Track Here</a></strong></p>
+        </div>
+
+        <div class="qr-code">
+            <script>
+                var qr = new QRious({
+                    element: document.getElementById('qr-code'),
+                    value: "<?= $get_tracking_url ?>",
+                    size: 150
+                });
+            </script>
+        </div>
     </div>
-    
-    <!-- END BASKET QRCODE -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/jquery.dataTables.min.js"></script>
-    <script src="assets/js/dataTables.bootstrap5.min.js"></script>
-    <script src="assets/js/dataTables.buttons.min.js"></script>
-    <script src="assets/js/jszip.min.js"></script>
-    <script src="assets/js/pdfmake.min.js"></script>
-    <script src="assets/js/vfs_fonts.js"></script>
-    <script src="assets/js/buttons.html5.min.js"></script>
-    <script src="assets/js/buttons.print.min.js"></script>
-    <script src="assets/js/listTable.js"></script>
-    <script src="assets/js/theme.js"></script>
-    <script>
-        $(document) .ready(function() {
-            (function() {
-                var qr = new QRious({
-                        element: document.getElementById('qr-code'),
-                        size: 150,
-                        value: '<?php echo $get_tracking_url; ?>'
-                    });
-                var qr = new QRious({
-                        element: document.getElementById('qr-code-basket'),
-                        size: 350,
-                        value: 'id=17'
-                    });
-                })();
-            
-            // $('.qr-code').each(function() {
-            //     var qr = new QRious({
-            //         element: this,
-            //         size: 150,
-            //         value: '<?php echo $get_tracking_url; ?>'
-            //     });
-            // });
-        } );
-            function printPageAndRedirect() {
-                setTimeout(function() {
-                    window.setTimeout(function() {
-                        window.print();
-                        window.location.href = 'transaction.php';
-                    }, 500);
-                }, 500);
-            }
-            
-    </script>
 </body>
 
 </html>
